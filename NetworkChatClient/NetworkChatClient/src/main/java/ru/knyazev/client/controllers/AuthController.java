@@ -56,6 +56,8 @@ public class AuthController {
     }
 
     public void initializeMessageHandler() {
+        setTimeoutBeforeClose(120_00);
+
         readMessageListener = getNetwork().addReadMessageListener(new ReadCommandListener() {
             @Override
             public void processReceivedCommand(Command command) {
@@ -71,6 +73,17 @@ public class AuthController {
                 }
             }
         });
+    }
+
+    private void setTimeoutBeforeClose(long ms) {
+        new Thread(() -> {
+            try {
+                Thread.sleep(ms);
+                System.exit(0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public void close() {
