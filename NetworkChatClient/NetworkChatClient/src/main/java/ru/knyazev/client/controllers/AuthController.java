@@ -56,7 +56,7 @@ public class AuthController {
     }
 
     public void initializeMessageHandler() {
-        setTimeoutBeforeClose(120_00);
+        setTimeoutBeforeClose(120_000);
 
         readMessageListener = getNetwork().addReadMessageListener(new ReadCommandListener() {
             @Override
