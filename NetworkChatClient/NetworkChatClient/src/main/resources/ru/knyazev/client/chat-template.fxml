@@ -14,7 +14,7 @@
       <HBox prefHeight="25.0" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="textField" maxHeight="1.7976931348623157E308" onAction="#sendMessage" HBox.hgrow="ALWAYS" />
-            <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" text="Отправить" />
+            <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" prefWidth="50.0" text="Send" />
          </children>
       </HBox>
    </bottom>

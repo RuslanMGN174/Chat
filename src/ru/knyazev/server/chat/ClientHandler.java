@@ -5,6 +5,7 @@ import ru.knyazev.clientserver.CommandType;
 import ru.knyazev.clientserver.commands.AuthCommandData;
 import ru.knyazev.clientserver.commands.PrivateMessageCommandData;
 import ru.knyazev.clientserver.commands.PublicMessageCommandData;
+import ru.knyazev.server.chat.data.DBConnection;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -57,7 +58,8 @@ public class ClientHandler {
                 AuthCommandData data = (AuthCommandData) command.getData();
                 String login = data.getLogin();
                 String password = data.getPassword();
-                String userName = server.getAuthService().getUserNameFromDB(login, password);
+                String userName = DBConnection.getInstance().getUserNameFromDB(login, password);
+//                String userName = server.getAuthService().getUserNameFromDB(login, password);
 //                String userName = server.getAuthService().getUserNameByLoginAndPassword(login, password);
                 if (userName == null) {
                     sendCommand(Command.errorCommand("Некорректные логин и пароль"));
