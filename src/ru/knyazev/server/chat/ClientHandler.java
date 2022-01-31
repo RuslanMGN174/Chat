@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ClientHandler {
 
@@ -19,6 +21,8 @@ public class ClientHandler {
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private String userName;
+    private final String DB_URL = "jdbc:sqlite:E:/Java/Chat/src/ru/knyazev/server/chat/data/Users.db";
+    private DBConnection userDB = new DBConnection();
 
     public ClientHandler(MyServer server, Socket clientSocket) {
         this.server = server;
@@ -33,7 +37,7 @@ public class ClientHandler {
             try {
                 authenticate();
                 readMessages();
-            } catch (IOException e) {
+            } catch (IOException | SQLException e) {
                 System.err.println("Failed to process message from client");
                 e.printStackTrace();
             } finally {
@@ -47,7 +51,8 @@ public class ClientHandler {
 
     }
 
-    private void authenticate() throws IOException {
+    private void authenticate() throws IOException, SQLException {
+        Statement statement = userDB.connect(DB_URL);
         while (true) {
             Command command = readCommand();
             if (command == null) {
@@ -58,7 +63,7 @@ public class ClientHandler {
                 AuthCommandData data = (AuthCommandData) command.getData();
                 String login = data.getLogin();
                 String password = data.getPassword();
-                String userName = DBConnection.getInstance().getUserNameFromDB(login, password);
+                String userName = userDB.getUserNameFromDB(login, password, statement);
 //                String userName = server.getAuthService().getUserNameFromDB(login, password);
 //                String userName = server.getAuthService().getUserNameByLoginAndPassword(login, password);
                 if (userName == null) {
