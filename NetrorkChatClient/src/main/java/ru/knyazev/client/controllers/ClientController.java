@@ -140,7 +140,6 @@ public class ClientController {
     }
 
     private void loadChatHistory() {
-//        String rows = chatHistoryService.loadLastRows(LAST_HISTORY_ROWS_NUMBER);
         String rows = chatHistoryService.loadLastRows2(LAST_HISTORY_ROWS_NUMBER);
         textArea.clear();
         textArea.setText(rows);

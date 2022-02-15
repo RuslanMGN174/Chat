@@ -19,7 +19,6 @@ import java.io.IOException;
 
 public class AuthController {
 
-
     @FXML
     private TextField loginField;
     @FXML
