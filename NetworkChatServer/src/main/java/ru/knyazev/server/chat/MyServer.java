@@ -46,7 +46,6 @@ public class MyServer {
     }
 
     private IAuthService createAuthService() {
-//        return new AuthService();
         return new PersistentDbAuthService();
     }
 

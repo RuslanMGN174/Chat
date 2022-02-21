@@ -73,6 +73,4 @@ public class Command implements Serializable {
         command.data = new UpdateUsernameCommandData(newUsername);
         return command;
     }
-
-
 }
