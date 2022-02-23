@@ -1,5 +1,7 @@
 package ru.knyazev.server.chat;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.knyazev.clientserver.Command;
 import ru.knyazev.clientserver.CommandType;
 import ru.knyazev.clientserver.commands.AuthCommandData;
@@ -20,6 +22,9 @@ public class ClientHandler {
     private ObjectOutputStream outputStream;
     private String userName;
 
+    private static Logger errorLogger = LogManager.getLogger("errorLogger");
+
+
     public ClientHandler(MyServer server, Socket clientSocket) {
         this.server = server;
         this.clientSocket = clientSocket;
@@ -34,12 +39,14 @@ public class ClientHandler {
                 authenticate();
                 readMessages();
             } catch (IOException e) {
+                errorLogger.error("Failed to process message from client");
                 System.err.println("Failed to process message from client");
                 e.printStackTrace();
             } finally {
                 try {
                     closeConnection();
                 } catch (IOException e) {
+                    errorLogger.error("Failed to close connection");
                     System.err.println("Failed to close connection");
                 }
             }
@@ -77,6 +84,7 @@ public class ClientHandler {
         try {
             command = (Command) inputStream.readObject();
         } catch (ClassNotFoundException e) {
+            errorLogger.error("Failed to read Command class");
             System.err.println("Failed to read Command class");
             e.printStackTrace();
         }

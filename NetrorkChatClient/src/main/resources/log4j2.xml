@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN">
+
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <File name="infoAndFatalLogFile" fileName="logs/infoAndFatalLog.log" immediateFlush="true">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level - %msg%n"/>
+        </File>
+
+        <File name="warnLogFile" fileName="logs/warnLog.log" immediateFlush="true">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level - %msg%n"/>
+        </File>
+
+        <File name="errorLogFile" fileName="logs/errorLog.log" immediateFlush="true">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level - %msg%n"/>
+        </File>
+    </appenders>
+
+    <loggers>
+        <logger name="infoLogger" level="info">
+            <appender-ref ref="infoAndFatalLogFile"/>
+        </logger>
+
+        <logger name="warnLogger" level="warn">
+            <appender-ref ref="warnLogFile"/>
+        </logger>
+
+        <logger name="errorLogger" level="error">
+            <appender-ref ref="errorLogFile"/>
+        </logger>
+
+        <root level="fatal">
+            <appender-ref ref="infoAndFatalLogFile" level="fatal"/>
+        </root>
+    </loggers>
+
+</configuration>

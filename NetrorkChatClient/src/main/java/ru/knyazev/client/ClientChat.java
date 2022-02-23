@@ -9,6 +9,8 @@ import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.knyazev.client.controllers.AuthController;
 import ru.knyazev.client.controllers.ClientController;
 import ru.knyazev.client.model.Network;
@@ -25,6 +27,8 @@ public class ClientChat extends Application {
     private Stage authStage;
     private FXMLLoader chatWindowLoader;
     private FXMLLoader authLoader;
+
+    private static Logger errorLogger = LogManager.getLogger("errorLogger");
 
     @Override
     public void init() throws Exception {
@@ -70,6 +74,7 @@ public class ClientChat extends Application {
 
         if (!result) {
             String errorMessage = CONNECTION_ERROR_MESSAGE;
+            errorLogger.error(errorMessage);
             System.err.println(errorMessage);
             showErrorDialog(errorMessage);
             return;
@@ -79,6 +84,7 @@ public class ClientChat extends Application {
         clientController.setApplication(this);
 
         this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
             @Override
             public void handle(WindowEvent windowEvent) {
                 Network.getInstance().close();

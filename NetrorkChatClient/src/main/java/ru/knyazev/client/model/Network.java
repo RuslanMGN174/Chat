@@ -1,5 +1,7 @@
 package ru.knyazev.client.model;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.knyazev.clientserver.Command;
 
 import java.io.IOException;
@@ -29,6 +31,8 @@ public class Network {
     private boolean connected;
     private ExecutorService executorService;
 
+    private static Logger errorLogger = LogManager.getLogger("errorLogger");
+
     public static Network getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new Network();
@@ -57,6 +61,7 @@ public class Network {
             return true;
         } catch (IOException e) {
             e.printStackTrace();
+            errorLogger.error("Не удалось установить соединение");
             System.err.println("Не удалось установить соединение");
             return false;
         }
@@ -74,6 +79,7 @@ public class Network {
         try {
             socketOutput.writeObject(command);
         } catch (IOException e) {
+            errorLogger.error("Не удалось отправить сообщение на сервер");
             System.err.println("Не удалось отправить сообщение на сервер");
             e.printStackTrace();
             throw e;
@@ -99,6 +105,7 @@ public class Network {
                         messageListener.processReceivedCommand(command);
                     }
                 } catch (IOException e) {
+                    errorLogger.error("Не удалось прочитать сообщения от сервера");
                     System.err.println("Не удалось прочитать сообщения от сервера");
                     e.printStackTrace();
                     close();
@@ -113,6 +120,7 @@ public class Network {
         try {
             command = (Command) socketInput.readObject();
         } catch (ClassNotFoundException e) {
+            errorLogger.error("Failed to read Command class");
             System.err.println("Failed to read Command class");
             e.printStackTrace();
         }
